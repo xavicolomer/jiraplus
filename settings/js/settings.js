@@ -1,3 +1,8 @@
+$(document).ready(function() {
+    var manifest = chrome.runtime.getManifest();
+    $('.version').html(manifest.version);
+});
+
 function slugify(text)
 {
     return text.toString().toLowerCase()
