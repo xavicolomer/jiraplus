@@ -1,0 +1,26 @@
+{
+    "manifest_version": 2,
+    "name": "JIRA+ - Automation Tools",
+    "description": "A set of tools to automatize JIRA workflow",
+    "version": "0.1.1",
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup/popup.html"
+    },
+    "permissions": [
+        "tabs", "storage", "contextMenus", "background", "activeTab", "http://*/", "https://*/"
+    ],
+    "background": {
+        "scripts": ["jquery.min.js", "contextmenu/contextmenu.js"],
+        "run_at": "document_end"
+    },
+    "options_page": "settings/settings.html",
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "web_accessible_resources": ["script.js", "common/js/common.js"],
+    "content_scripts": [
+    {
+        "matches": ["http://*/*", "https://*/*"],
+        "js": ["jquery.min.js", "background.js"],
+        "run_at": "document_end"
+    }]
+}

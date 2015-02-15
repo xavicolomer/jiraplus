@@ -1,0 +1,175 @@
+@import 'palette';
+
+html, body {
+    font-family: 'Arial', sans-serif;
+    padding: 0;
+    margin: 0;
+    font-size: 14px;
+    color: $primary-color-3;
+    background: #F5F5F5;
+}
+
+div, section {
+    display: block;
+}
+
+table {
+    border-spacing: 0;
+    margin-bottom: 20px;
+    font-size: 14px;
+    width: 100%;
+}
+
+th {
+    font-size: 10px;
+    padding-left: 5px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+}
+
+td {
+    vertical-align: top;
+    padding: 5px;
+}
+
+tr.valign-middle td {
+    vertical-align: middle;
+}
+
+tr.system {
+    padding: 11px;
+    color: $primary-color-1;
+
+    td {
+        padding: 12px;
+        padding-left: 5px;
+    }
+}
+
+td, th {
+    border-bottom: 1px solid $primary-color-1;
+}
+
+input, button:focus, select {
+    outline: 0;
+}
+
+input, textarea {
+    padding: 10px;
+    width: 100%;
+    display: block;
+    border: 1px solid $primary-color-1;
+    font-size: 14px;
+    outline: none;
+    margin-bottom: 5px;
+    padding-left: 10px;
+    border-radius: 2px;
+    box-sizing: border-box;
+}
+
+button, input[type="submit"], .submit-btn {
+    border: 0;
+    padding: 13px;
+    padding-left: 15px;
+    padding-right: 15px;
+    min-width: 100px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    background: $primary-color-3;
+    cursor: pointer;
+    border-radius: 2px;
+    letter-spacing: 1px;
+    margin-right: 8px;
+    font-size: 11px;
+    text-align: center;
+
+    &:hover {
+        background-color: lighten($primary-color-3, 7);
+    }
+
+    &.red {
+        background: $red;
+
+        &:hover {
+            background-color: lighten($red, 7);
+        }
+    }
+
+    &.green {
+        background: $green;
+
+        &:hover {
+            background-color: lighten($green, 7);
+        }
+        
+    }
+}
+
+select {
+    background: transparent;
+    font-size: 16px;
+    border: 1px solid $primary-color-1;
+    -webkit-appearance: none;
+    margin-bottom: 10px;
+    width: 100%;
+    padding-left: 10px;
+    color: $primary-color-3;
+    padding: 11px;
+    border-radius: 2px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+
+}
+
+h4 {
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    color: $primary-color-1;
+    font-weight: normal;
+}
+
+
+.align-right {
+    text-align: right;
+    padding-right: 0;
+}
+
+::-webkit-file-upload-button, input[type=file]:after {
+    display: inline-block;
+    left: 100%;
+    margin-left:3px;
+    padding: 3px 8px 2px;
+    position: relative;
+    -webkit-appearance: button;
+}
+
+input[type=file] {
+    position: relative;
+    -webkit-appearance: textfield;
+    -webkit-box-sizing: border-box;
+    border: 0;
+    width: 28px;
+    height: 28px;
+    background: $primary-color-3;
+    cursor: pointer;
+}
+ 
+input[type=file]::-webkit-file-upload-button {
+    border: none;
+    margin: 0;
+    padding: 0;
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    $primary-color-1;
+}

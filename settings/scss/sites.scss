@@ -1,0 +1,30 @@
+@import 'palette';
+
+.sites {
+    .form {
+        width: 400px;
+    }
+
+    .item {
+        background: white;
+        padding: 11px;
+        display: block;
+        float: left;
+        font-size: 14px;
+        border: 1px solid $primary-color-1;
+        margin-right: 8px;
+        border-radius: 2px;
+    }
+
+    ul {
+        display: block;
+        width: 100%;
+        height: 40px;
+    }
+
+    li:hover, li.selected {
+        background: $primary-color-3;
+        border-color: $primary-color-3;
+        color: white;
+    }
+}

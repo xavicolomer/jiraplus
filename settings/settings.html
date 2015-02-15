@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JIRA+ Settings</title>
+    <link rel="stylesheet" type="text/css" href="css/settings.css">
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,500,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+<section class="header">
+    <div class="jira">JIRA+ </div>
+    <div class="version">0.1.1</div>
+    <div class="about">About</div>
+</section>
+
+<section class="sites block">
+    <header>
+        Sites
+        <div class="buttons">
+            <button id="add-btn" class="action site green icon"><span class="icon-plus"></span></button>
+            <button id="edit-btn" class="action site icon"><span class="icon-pencil"></span></button>
+            <div class="upload-btn icon"> <input type="file" id="upload-files-dialog" name="files[]" multiple /><span class="icon-cloud-upload"></span></div>
+            <button id="download-btn" class="action site  icon"><span class="icon-cloud-download"></span></button>
+            <button id="remove-btn" class="action site red icon"><span class="icon-close"></span></button>
+        </span>
+    </header>
+    <section class="content"></section>
+</section>
+
+<script src="../jquery.min.js"></script>
+<script src="../common/js/common.js"></script>
+<script src="js/sites.js"></script>
+<script src="js/vars.js"></script>
+<script src="js/actions.js"></script>
+<script src="js/settings.js"></script>
+<script src="js/main.js"></script>
+</body>
+
+</html>
+
+<script type="text/html" id="site_form_tmpl">
+    <section class="block">
+        <header>
+            <span class="title">Add a new Site:</span>
+            <div class="buttons">
+                <button class="close-btn  icon"><span class="icon-close"></span></button>
+            </div>
+        </header>
+        <form class="form" id="site-form">
+            <input type="text" placeholder="Site Name" name="name" value="<%= name %>">
+            <input type="hidden" placeholder="Variable Key" name="oldKey" value="<%= id %>">
+            <input type="text" placeholder="Site URL" name="url" value="<%= url %>">
+            <div class="help">This url is important and should be the domain were you have installed your JIRA application, for example: http://my.jira.com/</div>
+            <textarea placeholder="Description" name="description" value=""><%= description %></textarea>
+            <% if (id === "") { %>
+                <div class="submit-btn" >create new site</div>
+            <% } else { %>
+                <div class="submit-btn" >save changes</div>
+            <% } %>
+        </form>
+    </section>
+</script>
+
+<script type="text/html" id="variable_form_tmpl">
+    <section class="block">
+        <header>
+            <span class="title">Add a new Variable:</span>
+            <div class="buttons">
+                <button class="close-btn  icon"><span class="icon-close"></span></button>
+            </div>
+        </header>
+        <form class="form" id="variable-form">
+            <input type="text" placeholder="Variable Name" name="name" value="<%= title %>">
+            <input type="hidden" placeholder="Variable Key" name="oldkey" value="<%= key %>">
+            <input type="text" placeholder="Variable Key" name="key" value="<%= key %>">
+            <input type="text" placeholder="Variable Value" name="value" value="<%= value %>">
+            <div class="help">You will be able to access this variables on the templates or mouse context menu</div>
+            <% if (key === "") { %>
+                <div class="submit-btn">create new variable</div>
+            <% } else { %>
+                <div class="submit-btn">save changes</div>
+            <% } %>
+        </form>
+    </section>
+</script>
+
+<script type="text/html" id="variables_block_tmpl">
+    <section class="variables block">
+        <header>
+            Variables
+            <div class="buttons">
+                <button id="add-btn" class="action green icon"><span class="icon-plus"></span></button>
+            </div>
+        </header>
+        <section class="content">
+            <table class="variables-list" cellpadding="pixels">
+                <tr class="header">
+                    <th width="250px" class="left">Name</th>
+                    <th width="150px" class="left">Key</th>
+                    <th class="left">Value</th>
+                    <th width="0px" class="left"></th>
+                    <th width="150px" class="left"></th>
+                </tr>
+            </table>
+            
+    </section>
+
+</script>
+
+<script type="text/html" id="variables_row_tmpl">
+    <tr class="<%= type %> valign-middle">
+        <td><%= title %></td>
+        <td><%= key %></td>
+        <td><%= value %></td>
+        <td><input type="hidden" name="key" value="<%= key %>"></td>
+        <td class="align-right">
+            <% if (type !== 'system') { %>
+                <button class="edit-btn icon"><span class="icon-pencil"></span></button>
+                <button class="delete-btn red icon"><span class="icon-close"></span></button>
+            <% } %>
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="actions_block_tmpl">
+    <section class="actions block">
+        <header>
+            Actions
+            <div class="buttons">
+                <button id="add-btn" class="action green icon"><span class="icon-plus"></span></button>
+            </div>
+        </header>
+        <section class="content">
+            <table class="actions-list" cellpadding="pixels">
+                <tr class="header">
+                    <th width="100px" class="left">Type</th>
+                    <th width="250px" class="left">Name</th>
+                    <th width="500px" class="left">Description</th>
+                    <th width="0px" class="left"></th>
+                    <th width="150px" class="left"></th>
+                </tr>
+            </table>
+    </section>
+</script>
+
+<script type="text/html" id="actions_form_tmpl">
+    <section class="block">
+        <header>
+            <span class="title">Add a new Action:</span>
+            <div class="buttons">
+                <button class="close-btn  icon"><span class="icon-close"></span></button>
+            </div>
+        </header>
+        <form class="form" id="action-form">
+            <select id="action-selector" name="trigger"><%= actions %></select>
+            <input type="hidden" placeholder="Action Key" name="oldkey" value="<%= trigger %>">
+            <textarea class="template" type="text" name="value" value=""><%= value %></textarea>
+            <% if (trigger === "") { %>
+                <div class="submit-btn">create new action</div>
+            <% } else { %>
+                <div class="submit-btn">save changes</div>
+            <% } %>
+        </form>
+    </section>
+</script>
+
+<script type="text/html" id="action_row_tmpl">
+    <tr class="valign-middle">
+        <td><%= type %></td>
+        <td><%= title %></td>
+        <td><%= description %></td>
+        <td><input type="hidden" name="key" value="<%= key %>"></td>
+        <td class="align-right">
+            <% if (type == 'template') { %>
+                <button class="play-btn icon"><span class="icon-play"></span></button>
+            <% } %>
+            <% if (type == 'validation') { %>
+                <button class="bug-btn icon"><span class="icon-bug"></span></button>
+            <% } %>
+            <button class="edit-btn icon"><span class="icon-pencil"></span></button>
+            <button class="delete-btn red icon"><span class="icon-close"></span></button>
+        </td>
+    </tr>
+</script>
+
+<script type="text/html" id="action_preview_tmpl">
+    <section class="block">
+        <header>
+            <span class="title">Preview</span>
+            <div class="buttons">
+                <button class="close-btn  icon"><span class="icon-close"></span></button>
+            </div>
+        </header>
+    
+        <textarea class="template"><%= preview %></textarea>
+    </section>
+</script>
+
+<script type="text/html" id="about_tmpl">
+    <section class="block">
+        <header>
+            <span class="title">JIRA+!</span>
+            <div class="buttons">
+                <button class="close-btn  icon"><span class="icon-close"></span></button>
+            </div>
+        </header>
+        
+        <div class="">
+            <p>Multiple people working on the same project is great because you learn, discuss and is funnier. On the other hand different people means different criteria and documentation, tickets, etc. tend to get a little bit messy if not following some guidelines.</p>
+
+            <p><b>This extension allows you to add templates and validations to some forms before submit, to make sure there's only one criteria :)</b></p>
+
+            <p>For now there are not much actions, but I probably will add more soon.</p>
+            <div class="me">
+                <p>If you are interested in my other developments you can follow me here:</p>
+                <ul>
+                    <li class="social"><a href="http://xavicolomer.com/?utm_source=jiraplus&utm_medium=button&utm_campaign=promo" target="_blank"><span class="icon-wordpress"></span></a></li>
+                    <li class="social"><a href="https://twitter.com/xaviercolomer" target="_blank"><span class="icon-twitter"></span></a></li>
+                    <li class="social"><a href="http://es.linkedin.com/in/xaviercolomer" target="_blank"><span class="icon-linkedin"></span></a></li>
+                    <li class="social"><a href="https://instagram.com/xaviercolomer" target="_blank"><span class="icon-instagram"></span></a></li>
+                    <li class="social"><a href="https://dribbble.com/xavicolomer" target="_blank"><span class="icon-dribbble"></span></a></li>
+                </ul>
+            </div>
+            
+
+            <div class="disclaimer">
+                JIRA Plus is an extension developed by an independent developer not related to Atlassian.<br />
+                Atlassian, JIRA are registered trademarks of Atlassian.
+            </div>
+        </div>
+    </section>
+</script>

@@ -1,0 +1,182 @@
+@import 'palette';
+@import 'tags';
+@import 'sites';
+@import 'vars';
+@import 'actions';
+
+.jira {
+    float: left;
+    margin-right: 10px;
+    font-size: 25px;
+}
+
+.version {
+    font-size: 12px;
+    opacity: 0.3;
+    float: left;
+}
+
+.help {
+    font-size: 11px;
+    color: #E8E8E8;
+    padding-bottom: 20px;
+    font-style: italic;
+    letter-spacing: 0.3px;
+}
+
+.about {
+    float: right;
+    font-size: 14px;
+    padding: 7px;
+    background: #133766;
+    border-radius: 2px;
+    padding-left: 15px;
+    padding-right: 15px;
+    cursor: pointer;
+}
+
+section.header {
+    background: $primary-color-3;
+    color: white;
+    padding: 12px;
+    font-size: 20px;
+    font-weight: normal;
+    height: 26px;
+    border-bottom: 2px solid #03162f;
+}
+
+section.block header {
+    font-size: 16px;
+    color: $primary-color-3;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding-bottom: 5px;
+    height: 24px;
+    margin-bottom: 30px;
+
+    .buttons {
+        float: right;
+
+        .icon {
+            margin-left: 5px;
+        }
+    }
+
+    span.title {
+        margin-top: 5px;
+        display: inline-block;
+    }
+}
+
+.icon {
+    min-width: 0;
+    font-size: 15px;
+    padding: 5px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    margin-right: 0;
+    
+}
+
+td .icon {
+    margin-left: 0; 
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.buttons {
+    display: flex;
+}
+
+.upload-btn {
+    width: 28px;
+    height: 28px;
+    position: relative;
+    display: block;
+    clear: both;
+    margin-bottom: 5px;
+    float: right;
+    margin-left: 5px;
+    border-radius: 2px;
+    overflow: hidden;
+    padding: 0;
+
+    &:hover {
+        background-color: lighten($primary-color-3, 7);
+    }
+
+    .icon-cloud-upload {
+        position: absolute;
+        top: 6px;
+        left: 5px;
+        color: white;
+        cursor: pointer;
+        pointer-events: none;
+    }
+}
+
+
+
+.left {
+    text-align: left;
+}
+
+.block {
+    background: white;
+    margin: 10px;
+    padding: 15px;
+}
+
+section.block.content {
+    padding-top: 15px;
+    padding-bottom: 40px;
+}
+
+.overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: $primary-color-3;
+}
+
+.lightbox {
+    width: 346px;
+    background: white;
+    overflow: auto;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 321px;
+    border-radius: 2px;
+}
+
+.me {
+    li.social {
+        background: $primary-color-3;
+        display: inline-block;
+        padding: 15px;
+        border-radius: 2px;
+        margin-right: 5px;
+
+        &:hover {
+            background: lighten($primary-color-3, 7);
+        }
+
+        span {
+            font-size: 30px;
+            color: white;
+        }
+    }
+}
+
+.disclaimer {
+    font-size: 12px;
+    color: #C3C3C3;
+}
