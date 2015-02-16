@@ -117,7 +117,12 @@ td .icon {
     }
 }
 
-
+span.label {
+    text-transform: uppercase;
+    font-size: 10px;
+    margin-bottom: 5px;
+    display: block;
+}
 
 .left {
     text-align: left;

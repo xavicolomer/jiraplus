@@ -147,6 +147,8 @@ td .icon { margin-left: 0; margin-bottom: 5px; margin-top: 5px; }
 .upload-btn:hover { background-color: #27629e; }
 .upload-btn .icon-cloud-upload { position: absolute; top: 6px; left: 5px; color: white; cursor: pointer; pointer-events: none; }
 
+span.label { text-transform: uppercase; font-size: 10px; margin-bottom: 5px; display: block; }
+
 .left { text-align: left; }
 
 .block { background: white; margin: 10px; padding: 15px; }

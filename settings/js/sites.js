@@ -31,10 +31,11 @@ function addSitesEventListeners() {
     });
 
     $(document).on('change', '.sites #upload-files-dialog', function(event) {
-        var files, reader, i;
+        var files, reader, i, file;
         files = event.target.files; 
 
-        for (i = 0, file; file = files[i]; i++) {
+        for (i = 0; i < files.length; i++) {
+            file = files[i];
             reader = new FileReader();
             reader.onload = (function(theFile) {
                 return function(e) {
@@ -146,9 +147,11 @@ function onSitesLoaded(data) {
     if (Object.keys(sites).length === 0) {
         $('#download-btn').hide();
         $('#remove-btn').hide();
+        $('#edit-btn').hide();
     } else {
         $('#download-btn').show();
         $('#remove-btn').show();
+        $('#edit-btn').show();
     }
 
     

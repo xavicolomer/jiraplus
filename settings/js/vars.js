@@ -84,8 +84,8 @@ function loadSiteVariables() {
     html = tmpl('variables_block_tmpl', {});
     $('.sites.block').after(tmpl('variables_block_tmpl', variable));
 
-    for (key in system_vars) {
-        variable = system_vars[key];
+    for (key in systemVars) {
+        variable = systemVars[key];
         variable.value = variable.callback();
         variable.type = 'system';
         row = tmpl('variables_row_tmpl', variable);

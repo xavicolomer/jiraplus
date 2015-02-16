@@ -1,18 +1,47 @@
-var actions = {
-    'prefill-defect-description': {
-        'key': 'prefill-defect-description',
-        'type': 'template',
-        'title': 'Defect Prefill Form Description',
-        'description': 'Will be executed when the user focuses on defect description',
-        'placeholder': 'Your template (you can use <%=variable%>)'
-    },
-    'validate-defect-description': {
-        'key': 'validate-defect-description',
-        'type': 'validation',
-        'title': 'Defect Description Validation',
-        'description': 'The description will be validated with a REGEX before submitting',
-        'placeholder': 'A regex validation formula'
-    }
+var allowedActions = { 
+        "template": 
+        {
+            "description" : "Template"
+        },
+        "validation":
+        {
+            "description" : "Validate"
+        }
+    };
+
+var allowedTargets = {
+        "description": {
+            "selector": '#description'
+        },
+        /*"title": {
+            "selector": '#description'
+        }*/
+    };
+
+var allowedIssueTypes = {
+        "defect": {},
+        "sub-tasks": {},
+        "functional requirement": {},
+    };
+
+
+var systemVars = {
+        'browser': {   
+            title: 'Browser Version', 
+            system: true, 
+            callback:browserVersion,
+            key: 'browser'
+        }};
+
+
+function generateUUID(){
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    return uuid;
 };
 
 function applyTemplate(text, site) {
@@ -30,12 +59,11 @@ function applyTemplate(text, site) {
 }
 
 function precalculateAllVariablesForSite(site) {
-    var site = sites[site];
     var variables = {};
 
     if (typeof site !== 'undefined') {
-        for (var key in system_vars) {
-            var variable = system_vars[key];
+        for (var key in systemVars) {
+            var variable = systemVars[key];
             variables[key] = variable.callback();
         }
         
@@ -49,14 +77,6 @@ function precalculateAllVariablesForSite(site) {
 
     return variables;
 }
-
-var system_vars = {
-        'browser': {   
-            title: 'Browser Version', 
-            system: true, 
-            callback:browserVersion,
-            key: 'browser'
-        }};
 
 function browserVersion() {
     var ver = window.navigator.appVersion.match(/Chrome\/([0-9.]+?) /)[1];

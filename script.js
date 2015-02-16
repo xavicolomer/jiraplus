@@ -28,40 +28,74 @@ function isAllowedSite() {
     return false;
 }
 
-function onFocusOnDefectDescription() {
-    var key, action, site = isAllowedSite();
-    if (site) {
-        for (key in site.actions) {
-            action = site.actions[key];
-            if (action.trigger === 'prefill-defect-description') {
-                jQuery('textarea[name="description"]').val(applyTemplate(action.value, site.id));
-            }
-        }
-    }
-}
+jQuery(document).on('change', '#issuetype-field', function() {
+    tempHandler = undefined;
+});
 
-jQuery(document).on('focusin', 'form input', function() { 
-    var type = jQuery(this).parents('#create-subtask-dialog').find('#issuetype-field').val().toLowerCase();
-    if (jQuery.inArray(type, ['defect', 'sub-task', 'bug']) === -1) {
-        return;
-    }
-
-    var key, action, site = isAllowedSite();
+jQuery(document).on('focusin', 'form input', function() {
+    var key, action, type, siteIssues, site = isAllowedSite();
     if (site) {
-        for (key in site.actions) {
-            action = site.actions[key];
-            if (action.trigger === 'validate-defect-description') {
-                jQuery.each(jQuery('form').data('events'), function(i, e) {
-                    if (i === 'submit') {
-                        if (e.length && typeof(tempHandler) === 'undefined') {
-                            tempHandler = e[0].handler;
-                            disableFormSubmit(jQuery(this).parents('form'));
+        if (jQuery(this).parents('form').find('#issuetype-field').length) {
+            type = jQuery(this).parents('form').find('#issuetype-field').val().toLowerCase();
+
+            for (key in site.actions) {
+                action = site.actions[key];
+                if (action.action == 'validation' && action.type === type) {
+                    jQuery.each(jQuery('form').data('events'), function(i, e) {
+                        if (i === 'submit') {
+                            if (e.length && typeof(tempHandler) === 'undefined') {
+                                tempHandler = e[0].handler;
+                                disableFormSubmit(jQuery(this).parents('form'));
+                            }
                         }
-                    }
-                });
+                    });
+                    return;
+                }
             }
         }
     }
+});
+
+jQuery(document).on('keyup', 'form input, form textarea', function(event) { 
+    jQuery('.error.jiraplus').remove();
+    var re, results, key, action, selector, site = isAllowedSite();
+    if (site) {
+        for (key in site.actions) {
+            action = site.actions[key];
+            if (action.action === 'validation') {
+                re = new RegExp(action.data.value, action.data.modifiers);
+                selector = allowedTargets[action.target]["selector"];
+                results = re.exec(jQuery('form ' + selector).val());
+                if (results !== null) {
+                    enableFormSubmit(jQuery(this).parents('form'));
+                } else {
+                    jQuery('form ' + selector).after('<div class="error jiraplus" data-field="summary">Your field has not been validated by JIRA+</div>');
+                    disableFormSubmit(jQuery(this).parents('form'));
+                }
+            }
+        }
+    }
+});
+
+jQuery(document).on('focus', 'form input, form textarea', function() { 
+    var type, action, site = isAllowedSite();
+
+    if (jQuery(this).parents('form').find('#issuetype-field').length) {
+        if (jQuery(this).val() === '') {
+            type = jQuery(this).parents('form').find('#issuetype-field').val().toLowerCase();
+            for (key in site.actions) {
+                action = site.actions[key];
+                if (action.type === type && action.action === 'template' && jQuery(allowedTargets[action.target].selector)[0] == jQuery(this)[0]) {
+                    jQuery(this).val(applyTemplate(action.data.value, site.id));
+                }
+            }
+        } 
+    }
+    
+});
+
+jQuery(document).on('submit', 'form', function() { 
+    tempHandler = undefined;
 });
 
 function enableFormSubmit(form) {
@@ -74,41 +108,12 @@ function disableFormSubmit(form) {
     jQuery(form).attr('onsubmit', 'return false;');
 }
 
-jQuery(document).on('keyup', 'form input, form textarea[name="description"]', function(event) { 
-    var re, results, key, action, site = isAllowedSite();
-    if (site) {
-        for (key in site.actions) {
-            action = site.actions[key];
-            if (action.trigger === 'validate-defect-description') {
-                re = new RegExp(action.value, "gm");
-                results = re.exec(jQuery('form textarea[name="description"]').val())
-                jQuery('form textarea[name="description"]').next('.error.jiraplus').remove();
-                if (results !== null) {
-                    enableFormSubmit(jQuery(this).parents('form'));
-                } else {
-                    jQuery('form textarea[name="description"]').after('<div class="error jiraplus" data-field="summary">Your description does not fit the criteria.</div>');
-                    disableFormSubmit(jQuery(this).parents('form'));
-                }
-            }
-        }
-    }
-});
 
-jQuery(document).on('submit', 'form', function() { 
-    tempHandler = undefined;
-});
 
-jQuery(document).on('focus', 'textarea[name="description"]', function() { 
-    if (jQuery('textarea[name="description"]').val() === '') {
-        var type = jQuery(this).parents('#create-subtask-dialog').find('#issuetype-field').val().toLowerCase();
-        switch (type) {
-            case 'defect':
-            case 'sub-task':
-                onFocusOnDefectDescription();
-                break;
 
-            default:
-                break;
-        }
-    } 
-});
+
+
+
+
+
+

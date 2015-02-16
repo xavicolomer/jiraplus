@@ -46,10 +46,13 @@
             </div>
         </header>
         <form class="form" id="site-form">
+            <span class="label">site name</span>
             <input type="text" placeholder="Site Name" name="name" value="<%= name %>">
             <input type="hidden" placeholder="Variable Key" name="oldKey" value="<%= id %>">
+            <span class="label">jira domain baseurl</span>
             <input type="text" placeholder="Site URL" name="url" value="<%= url %>">
             <div class="help">This url is important and should be the domain were you have installed your JIRA application, for example: http://my.jira.com/</div>
+            <span class="label">description</span>
             <textarea placeholder="Description" name="description" value=""><%= description %></textarea>
             <% if (id === "") { %>
                 <div class="submit-btn" >create new site</div>
@@ -69,9 +72,12 @@
             </div>
         </header>
         <form class="form" id="variable-form">
+            <span class="label">name</span>
             <input type="text" placeholder="Variable Name" name="name" value="<%= title %>">
             <input type="hidden" placeholder="Variable Key" name="oldkey" value="<%= key %>">
+            <span class="label">key</span>
             <input type="text" placeholder="Variable Key" name="key" value="<%= key %>">
+            <span class="label">value</span>
             <input type="text" placeholder="Variable Value" name="value" value="<%= value %>">
             <div class="help">You will be able to access this variables on the templates or mouse context menu</div>
             <% if (key === "") { %>
@@ -132,9 +138,10 @@
         <section class="content">
             <table class="actions-list" cellpadding="pixels">
                 <tr class="header">
-                    <th width="100px" class="left">Type</th>
-                    <th width="250px" class="left">Name</th>
-                    <th width="500px" class="left">Description</th>
+                    <th width="350px" class="left">Key</th>
+                    <th width="150px" class="left">action</th>
+                    <th width="150px" class="left">Target</th>
+                    <th class="left">Type</th>
                     <th width="0px" class="left"></th>
                     <th width="150px" class="left"></th>
                 </tr>
@@ -151,10 +158,15 @@
             </div>
         </header>
         <form class="form" id="action-form">
-            <select id="action-selector" name="trigger"><%= actions %></select>
-            <input type="hidden" placeholder="Action Key" name="oldkey" value="<%= trigger %>">
-            <textarea class="template" type="text" name="value" value=""><%= value %></textarea>
-            <% if (trigger === "") { %>
+            <span class="label">I want to</span>
+            <select id="action-selector" name="action"><%= actions %></select>
+            <span class="label">This field</span>
+            <select id="target-selector" name="target"><%= targets %></select>
+            <span class="label">Inside issue Type</span>
+            <select id="type-selector" name="type"><%= issueTypes %></select>
+            <input type="hidden" placeholder="Action Key" name="oldKey" value="<%= key %>">
+            <section id="values"></section>
+            <% if (key === "") { %>
                 <div class="submit-btn">create new action</div>
             <% } else { %>
                 <div class="submit-btn">save changes</div>
@@ -165,15 +177,16 @@
 
 <script type="text/html" id="action_row_tmpl">
     <tr class="valign-middle">
+        <td><%= key %></td>
+        <td><%= action %></td>
+        <td><%= target %></td>
         <td><%= type %></td>
-        <td><%= title %></td>
-        <td><%= description %></td>
         <td><input type="hidden" name="key" value="<%= key %>"></td>
         <td class="align-right">
-            <% if (type == 'template') { %>
+            <% if (action == 'template') { %>
                 <button class="play-btn icon"><span class="icon-play"></span></button>
             <% } %>
-            <% if (type == 'validation') { %>
+            <% if (action == 'validation') { %>
                 <button class="bug-btn icon"><span class="icon-bug"></span></button>
             <% } %>
             <button class="edit-btn icon"><span class="icon-pencil"></span></button>
@@ -193,6 +206,18 @@
     
         <textarea class="template"><%= preview %></textarea>
     </section>
+</script>
+
+<script type="text/html" id="action_template_tmpl">
+    <span class="label">template</span>
+    <textarea class="template" placeholder="A template that will fill the selected field" type="text" name="value" ><%= value %></textarea>
+</script>
+
+<script type="text/html" id="action_validation_tmpl">
+    <span class="label">regex formula</span>
+    <textarea class="template" placeholder="A REGEX expression" type="text" name="value" ><%= value %></textarea>
+    <span class="label">regex modifiers</span>
+    <input type="text" placeholder="Modifiers" name="modifiers" value="<%= modifiers %>">
 </script>
 
 <script type="text/html" id="about_tmpl">

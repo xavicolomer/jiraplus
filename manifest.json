@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "JIRA+ - Automation Tools",
     "description": "A set of tools to automatize JIRA workflow",
-    "version": "0.1.2",
+    "version": "0.1.4",
     "icons": {  "16": "icon16.png",
                 "48": "icon48.png",
                 "128": "icon128.png" },

@@ -2,13 +2,15 @@ addActionsEventListeners();
 
 function addActionsEventListeners() {
     $(document).on('click', '.actions #add-btn', function() {
-        var html = tmpl('actions_form_tmpl', createEmptyAction());
-        openDialog(html);
+        var action, html;
+
+        action = createEmptyAction();
+        html = tmpl('actions_form_tmpl', action);
+        openDialog(html, 400, 600);
     });
 
     $(document).on('change', '#action-selector', function(e) {
-        var action = actions[$(this).val()];
-        $('#action-form textarea').attr('placeholder', action.placeholder);
+        $('#values').html(tmpl('action_' + $(this).val() + '_tmpl', { value: "", modifiers: "" }));
     });
 
     $(document).on('click', '.actions .edit-btn', function() {
@@ -17,9 +19,13 @@ function addActionsEventListeners() {
         site = sites[getCurrentSite()];
         if (typeof site !== 'undefined' && typeof site['actions'] !== 'undefined' && typeof site['actions'][key] !== 'undefined') { 
             action = site['actions'][key];
-            action.actions = buildActionsSelector(key);
+            action.actions = buildSelector({ dictionary: allowedActions, field: 'description', preselectedOption: action.action });
+            action.targets = buildSelector({ dictionary: allowedTargets, preselectedOption: action.target });
+            action.issueTypes = buildSelector({ dictionary: allowedIssueTypes, preselectedOption: action.type });
             html = tmpl('actions_form_tmpl', action);
-            openDialog(html);
+            openDialog(html, 400, 600);
+
+            $('#values').html(tmpl('action_' + action.action + '_tmpl', action.data));
         }
     });
 
@@ -39,7 +45,7 @@ function addActionsEventListeners() {
         site = sites[getCurrentSite()];
         if (typeof site !== 'undefined' && typeof site['actions'] !== 'undefined' && typeof site['actions'][key] !== 'undefined') { 
             action = site['actions'][key];
-            window.open('https://regex101.com/?regex=' + action.value + '&options=gm', "_blank");
+            window.open('https://regex101.com/?regex=' + action.data.value + '&options=' + action.data.modifiers, "_blank");
         }
     });
 
@@ -49,8 +55,6 @@ function addActionsEventListeners() {
         site = sites[getCurrentSite()];
         if (typeof site !== 'undefined' && typeof site['actions'] !== 'undefined' && typeof site['actions'][key] !== 'undefined') { 
             action = site['actions'][key];
-            variables = precalculateAllVariablesForSite(getCurrentSite());
-
             action.preview = triggerActionForSite(action, getCurrentSite());
             html = tmpl('action_preview_tmpl', action);
             openDialog(html);
@@ -62,6 +66,7 @@ function addActionsEventListeners() {
         site = sites[getCurrentSite()];
         if (typeof site !== 'undefined' && isActionsFormValid()) {
             action = getActionObjectFromForm();
+            action.key = generateUUID();
 
             if (typeof site['actions'] === 'undefined') {
                 site['actions'] = {};
@@ -72,8 +77,10 @@ function addActionsEventListeners() {
             }
             delete(action.oldKey);
             delete(action.actions);
+            delete(action.targets);
+            delete(action.issueTypes);
 
-            sites[getCurrentSite()]['actions'][action.trigger] = action;
+            sites[getCurrentSite()]['actions'][action.key] = action;
             chrome.storage.sync.set({ 'sites': sites }, onActionSavedToDisk);
             closeDialog();
         }
@@ -95,28 +102,13 @@ function triggerActionForSite(action, targetSite) {
         return;
     }
 
-    action = site.actions[action.trigger];
-    switch (actions[action.trigger].type) {
+    myAction = site.actions[action.key];
+    switch (myAction.action) {
         case "template":
-            subst = '%cr%';
-            re = /(\n)/gmi; 
-            variables = precalculateAllVariablesForSite(targetSite);
-            action.value = action.value.replace(re, subst);
-
-            if (action.value.indexOf('<%=') > 0) {
-                text = tmpl(action.value, variables);
-            } else {
-                text = action.value;
-            }
-
-            subst = '\n';
-            re = /(%cr%)/gmi;
-            text = text.replace(re, subst);
-            action.value = action.value.replace(re, subst);
-            return text;
+            return applyTemplate(myAction.data.value, site);
             break;
         default:
-            return action.value;
+            return myAction.data.value;
     }
 }
 
@@ -126,18 +118,34 @@ function onActionSavedToDisk() {
 
 function createEmptyAction() {
     var action = {};
-    action.trigger = "";
+    action.action = "";
+    action.target = "";
+    action.type = "";
     action.key = "";
-    action.value = "";
-    action.actions = buildActionsSelector();
+    action.actions = buildSelector({ dictionary: allowedActions, field: 'description' });
+    action.targets = buildSelector({ dictionary: allowedTargets });
+    action.issueTypes = buildSelector({ dictionary: allowedIssueTypes });
     return action;
 }
 
 function getActionObjectFromForm() {
     var action = {};
-    action.trigger = $('#action-selector').val();
+    action.action = $('#action-selector').val();
+    action.type = $('#type-selector').val();
+    action.target = $('#target-selector').val();
+    action.data = {};
+
+    switch (action.action) {
+        case 'validation':
+            action.data.modifiers = $('#action-form input[name="modifiers"]').val();
+            action.data.value = $('#action-form textarea').val();
+            break;
+        case 'template':
+            action.data.value = $('#action-form textarea').val();
+            break;
+    }
+
     action.oldKey = $('#action-form input[name="oldKey"]').val();
-    action.value = $('#action-form textarea').val();
     action.created = new Date().getTime();
     return action;
 }
@@ -156,9 +164,9 @@ function loadSiteActions() {
 
     for (key in site['actions']) {
         if (key === "undefined") {
-            delete[actions[key]];
+            delete[site['actions'][key]];
         } else {
-            action = actions[key];
+            action = site.actions[key];
             row = tmpl('action_row_tmpl', action);
             $('.actions-list .header').after(row);
         }
@@ -170,6 +178,48 @@ function removeActionsSection() {
 }
 
 function buildActionsSelector(selected) {
+    var html, key, selectedAttr, i;
+    
+    html = '<option value="">Select your option</option>';
+    for (key in allowedActions) {
+        selectedAttr = '';
+        if (typeof selected !== 'undefined' && key === selected) {
+            selectedAttr = ' selected '
+        }
+        html += '<option value="' + key + '" ' + selectedAttr + '>' + allowedActions[key].description + '</option>'
+    }
+    return html;
+}
+
+function buildSelector(options) {
+    var html, key, selectedAttr, i, text, sourceDictionary, preselectedOption, textAttr;
+
+    sourceDictionary = options.dictionary;
+    preselectedOption = "";
+    if (typeof(options.preselectedOption) !== 'undefined') {
+        preselectedOption = options.preselectedOption;
+    }
+    textAttr = "";
+    if (typeof(options.field) !== 'undefined') {
+        textAttr = options.field;
+    }
+    
+    html = '<option value="">Select your option</option>';
+    for (key in sourceDictionary) {
+        selectedAttr = '';
+        if (typeof preselectedOption !== 'undefined' && key === preselectedOption) {
+            selectedAttr = ' selected '
+        }
+        text = key;
+        if (typeof(textAttr) !== 'undefined' && textAttr !== "") {
+            text = sourceDictionary[key][textAttr];
+        }
+        html += '<option value="' + key + '" ' + selectedAttr + '>' + text + '</option>'
+    }
+    return html;
+}
+
+function buildActionsSelectorOld(selected) {
     var html, key, selectedAttr;
     html = '<option value="">Select your option</option>';
     for (key in actions) {
