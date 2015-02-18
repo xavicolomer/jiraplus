@@ -40,8 +40,12 @@ function closeDialog(event) {
 } 
 
 $(document).on('click', '.about', function() {
-    var html = tmpl('about_tmpl', {});
-    openDialog(html, 600, 450);
+    var html = templ('about_templ', {});
+    openDialog(html, 700, 570);
+})
+
+$(document).on('click', '.twitter', function() {
+    window.open('http://twitter.com/share?text=' + 'heJIRA: A Chrome extension to prefill and validate JIRA forms' + '&url=https://chrome.google.com/webstore/detail/hejira/miecliambfmbibhngdhdifobofglcfjo&hashtags=jira,useful,development', "_blank")
 })
 
 $(document).on('click', '.close-btn', function() {

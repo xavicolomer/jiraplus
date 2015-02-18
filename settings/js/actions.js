@@ -5,12 +5,12 @@ function addActionsEventListeners() {
         var action, html;
 
         action = createEmptyAction();
-        html = tmpl('actions_form_tmpl', action);
-        openDialog(html, 400, 600);
+        html = templ('actions_form_templ', action);
+        openDialog(html, 500, 700);
     });
 
     $(document).on('change', '#action-selector', function(e) {
-        $('#values').html(tmpl('action_' + $(this).val() + '_tmpl', { value: "", modifiers: "" }));
+        $('#values').html(templ('action_' + $(this).val() + '_templ', { value: "", modifiers: "", message: "" }));
     });
 
     $(document).on('click', '.actions .edit-btn', function() {
@@ -22,10 +22,10 @@ function addActionsEventListeners() {
             action.actions = buildSelector({ dictionary: allowedActions, field: 'description', preselectedOption: action.action });
             action.targets = buildSelector({ dictionary: allowedTargets, preselectedOption: action.target });
             action.issueTypes = buildSelector({ dictionary: allowedIssueTypes, preselectedOption: action.type });
-            html = tmpl('actions_form_tmpl', action);
-            openDialog(html, 400, 600);
+            html = templ('actions_form_templ', action);
+            openDialog(html, 500, 700);
 
-            $('#values').html(tmpl('action_' + action.action + '_tmpl', action.data));
+            $('#values').html(templ('action_' + action.action + '_templ', action.data));
         }
     });
 
@@ -56,7 +56,7 @@ function addActionsEventListeners() {
         if (typeof site !== 'undefined' && typeof site['actions'] !== 'undefined' && typeof site['actions'][key] !== 'undefined') { 
             action = site['actions'][key];
             action.preview = triggerActionForSite(action, getCurrentSite());
-            html = tmpl('action_preview_tmpl', action);
+            html = templ('action_preview_templ', action);
             openDialog(html);
         }
     });
@@ -97,7 +97,7 @@ function triggerActionForSite(action, targetSite) {
         return;
     }
 
-    if (typeof site.actions[action.trigger] === 'undefined') {
+    if (typeof site.actions[action.id] === 'undefined') {
         throw 'You have not defined a trigger for this action';
         return;
     }
@@ -105,7 +105,7 @@ function triggerActionForSite(action, targetSite) {
     myAction = site.actions[action.key];
     switch (myAction.action) {
         case "template":
-            return applyTemplate(myAction.data.value, site);
+            return applyTemplate(myAction.data.value, site.id);
             break;
         default:
             return myAction.data.value;
@@ -139,6 +139,7 @@ function getActionObjectFromForm() {
         case 'validation':
             action.data.modifiers = $('#action-form input[name="modifiers"]').val();
             action.data.value = $('#action-form textarea').val();
+            action.data.message = $('#action-form input[name="message"]').val();
             break;
         case 'template':
             action.data.value = $('#action-form textarea').val();
@@ -159,7 +160,7 @@ function loadSiteActions() {
     removeActionsSection();
 
     site = sites[getCurrentSite()];
-    html = tmpl('actions_block_tmpl', {});
+    html = templ('actions_block_templ', {});
     $('.variables.block').after(html);
 
     for (key in site['actions']) {
@@ -167,7 +168,7 @@ function loadSiteActions() {
             delete[site['actions'][key]];
         } else {
             action = site.actions[key];
-            row = tmpl('action_row_tmpl', action);
+            row = templ('action_row_templ', action);
             $('.actions-list .header').after(row);
         }
     }

@@ -1,13 +1,15 @@
 {
     "manifest_version": 2,
-    "name": "JIRA+ - Automation Tools",
+    "name": "HeJIRA",
     "description": "A set of tools to automatize JIRA workflow",
-    "version": "0.1.4",
-    "icons": {  "16": "icon16.png",
-                "48": "icon48.png",
-                "128": "icon128.png" },
+    "version": "0.1.7",
+    "icons": {  "16": "images/icon16.png",
+                "19": "images/icon19.png",
+                "38": "images/icon38.png",
+                "48": "images/icon48.png",
+                "128": "images/icon128.png" },
     "browser_action": {
-        "default_icon": "icon16.png",
+        "default_icon": "images/icon19.png",
         "default_popup": "popup/popup.html"
     },
     "permissions": [

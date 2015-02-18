@@ -1,4 +1,4 @@
-JIRA+ Automation Tools for JIRA Workflow
+JIRA Constency
 ===================================================
 
 IMPORTANT NOTE:
@@ -31,4 +31,5 @@ decisions.
 More Information
 -----------------
 @xaviercolomer
+
 http://xavicolomer.com

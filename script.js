@@ -1,13 +1,14 @@
 var sites, currentSite, tempHandler;
 
+init();
+
 document.addEventListener("onSitesLoaded", function(data) {
     sites = data.detail;
 });
 
-init();
-
 function init() {
-    var event = document.createEvent('Event');
+    var event;
+    event = document.createEvent('Event');
     event.initEvent('initJIRAPlus');
     document.dispatchEvent(event);    
 }
@@ -29,6 +30,8 @@ function isAllowedSite() {
 }
 
 jQuery(document).on('change', '#issuetype-field', function() {
+    jQuery('.error.jiraplus').remove();
+    enableFormSubmit(jQuery(this).parents('form'));
     tempHandler = undefined;
 });
 
@@ -60,17 +63,24 @@ jQuery(document).on('keyup', 'form input, form textarea', function(event) {
     jQuery('.error.jiraplus').remove();
     var re, results, key, action, selector, site = isAllowedSite();
     if (site) {
-        for (key in site.actions) {
-            action = site.actions[key];
-            if (action.action === 'validation') {
-                re = new RegExp(action.data.value, action.data.modifiers);
-                selector = allowedTargets[action.target]["selector"];
-                results = re.exec(jQuery('form ' + selector).val());
-                if (results !== null) {
-                    enableFormSubmit(jQuery(this).parents('form'));
-                } else {
-                    jQuery('form ' + selector).after('<div class="error jiraplus" data-field="summary">Your field has not been validated by JIRA+</div>');
-                    disableFormSubmit(jQuery(this).parents('form'));
+        if (jQuery(this).parents('form').find('#issuetype-field').length) {
+            type = jQuery(this).parents('form').find('#issuetype-field').val().toLowerCase();
+            for (key in site.actions) {
+                action = site.actions[key];
+                if (action.action === 'validation' && action.type === type) {
+                    re = new RegExp(action.data.value, action.data.modifiers);
+                    selector = allowedTargets[action.target]["selector"];
+                    results = re.exec(jQuery('form ' + selector).val());
+                    if (results !== null) {
+                        enableFormSubmit(jQuery(this).parents('form'));
+                    } else {
+                        var message = 'Your field has not been validated by JIRA+';
+                        if (action.data.message && action.data.message !== "") {
+                            message = action.data.message;
+                        }
+                        jQuery('form ' + selector).after('<div class="error jiraplus" data-field="summary">' + message + '</div>');
+                        disableFormSubmit(jQuery(this).parents('form'));
+                    }
                 }
             }
         }
@@ -91,7 +101,6 @@ jQuery(document).on('focus', 'form input, form textarea', function() {
             }
         } 
     }
-    
 });
 
 jQuery(document).on('submit', 'form', function() { 

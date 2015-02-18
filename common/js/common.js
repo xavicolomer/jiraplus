@@ -13,9 +13,9 @@ var allowedTargets = {
         "description": {
             "selector": '#description'
         },
-        /*"title": {
-            "selector": '#description'
-        }*/
+        "summary": {
+            "selector": '#summary'
+        }
     };
 
 var allowedIssueTypes = {
@@ -23,7 +23,6 @@ var allowedIssueTypes = {
         "sub-tasks": {},
         "functional requirement": {},
     };
-
 
 var systemVars = {
         'browser': {   
@@ -50,7 +49,7 @@ function applyTemplate(text, site) {
     var re = /(\n)/gmi; 
     var result = text.replace(re, subst);
     if (result.indexOf('<%=') > 0) {
-        result = tmpl(result, variables);
+        result = templ(result, variables);
     }
     var subst = '\n';
     var re = /(%cr%)/gmi;
@@ -68,8 +67,8 @@ function precalculateAllVariablesForSite(site) {
         }
         
         if (site) {
-            for (key in site['variables']) {
-                var variable = site['variables'][key];
+            for (key in sites[site]['variables']) {
+                var variable = sites[site]['variables'][key];
                 variables[key] = variable.value;
             }
         }
@@ -87,12 +86,12 @@ function browserVersion() {
 (function(){
     var cache = {};
  
-    this.tmpl = function tmpl(str, data) {
+    this.templ = function templ(str, data) {
         // Figure out if we're getting a template, or if we need to
         // load the template - and be sure to cache the result.
         var fn = !/\W/.test(str) ?
             cache[str] = cache[str] ||
-            tmpl(document.getElementById(str).innerHTML) :
+            templ(document.getElementById(str).innerHTML) :
      
         // Generate a reusable function that will serve as a template
         // generator (and which will be cached).

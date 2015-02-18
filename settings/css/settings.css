@@ -1,6 +1,8 @@
 @font-face { font-family: 'icomoon'; src: url("../fonts/icomoon.eot?6ycfhx"); src: url("../fonts/icomoon.eot?#iefix6ycfhx") format("embedded-opentype"), url("../fonts/icomoon.woff?6ycfhx") format("woff"), url("../fonts/icomoon.ttf?6ycfhx") format("truetype"), url("../fonts/icomoon.svg?6ycfhx#icomoon") format("svg"); font-weight: normal; font-style: normal; }
 [class^="icon-"], [class*=" icon-"] { font-family: 'icomoon'; speak: none; font-style: normal; font-weight: normal; font-variant: normal; text-transform: none; line-height: 1; /* Better Font Rendering =========== */ -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
+.icon-hejira:before { content: "\e600"; }
+
 .icon-search:before { content: "\f002"; }
 
 .icon-star:before { content: "\f005"; }
@@ -122,15 +124,16 @@ input[type=file]::-webkit-file-upload-button { border: none; margin: 0; padding:
 
 textarea.template { height: 172px; }
 
-.jira { float: left; margin-right: 10px; font-size: 25px; }
-
-.version { font-size: 12px; opacity: 0.3; float: left; }
-
 .help { font-size: 11px; color: #E8E8E8; padding-bottom: 20px; font-style: italic; letter-spacing: 0.3px; }
 
-.about { float: right; font-size: 14px; padding: 7px; background: #133766; border-radius: 2px; padding-left: 15px; padding-right: 15px; cursor: pointer; }
-
 section.header { background: #205081; color: white; padding: 12px; font-size: 20px; font-weight: normal; height: 26px; border-bottom: 2px solid #03162f; }
+section.header span.icon-hejira { display: block; float: left; font-size: 29px; margin-right: 7px; }
+section.header .jira { float: left; margin-right: 10px; font-size: 25px; }
+section.header .version { font-size: 12px; opacity: 0.3; float: left; }
+section.header .btn { font-size: 14px; padding: 7px; background: #133766; border-radius: 2px; cursor: pointer; margin-left: 5px; }
+section.header .btn .about { padding-left: 15px; padding-right: 15px; }
+section.header .btn:hover { color: #133766; background: white; }
+section.header .buttons { float: right; }
 
 section.block header { font-size: 16px; color: #205081; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; padding-bottom: 5px; height: 24px; margin-bottom: 30px; }
 section.block header .buttons { float: right; }
@@ -164,3 +167,6 @@ section.block.content { padding-top: 15px; padding-bottom: 40px; }
 .me li.social span { font-size: 30px; color: white; }
 
 .disclaimer { font-size: 12px; color: #C3C3C3; }
+
+.image-wrapper { width: 100%; height: 128px; background: #205081; text-align: center; }
+.image-wrapper span.icon-hejira { color: white; font-size: 130px; }

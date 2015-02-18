@@ -16,8 +16,25 @@ function onSitesLoadedInjectData(data) {
 
         if (changeInfo.status == 'complete') {
             if (tab.url.indexOf('http') == 0) {
-                chrome.tabs.executeScript(null, {code:"var s = document.createElement('script');s.src = chrome.extension.getURL('common/js/common.js');s.onload = function() { this.parentNode.removeChild(this);};(document.head||document.documentElement).appendChild(s);"});
-                chrome.tabs.executeScript(null, {code:"var s = document.createElement('script');s.src = chrome.extension.getURL('script.js');s.onload = function() { this.parentNode.removeChild(this);};(document.head||document.documentElement).appendChild(s);"});
+                chrome.tabs.executeScript(null, {
+                    code:"var s = document.createElement('script');s.src = chrome.extension.getURL('common/js/common.js');s.onload = function() { this.parentNode.removeChild(this);};(document.head||document.documentElement).appendChild(s);"
+                },
+                function(result) {
+                    if (chrome.runtime.lastError) {
+                        console.log(chrome.runtime.lastError);
+                        return;
+                    }
+                });
+
+                chrome.tabs.executeScript(null, {
+                    code:"var s = document.createElement('script');s.src = chrome.extension.getURL('script.js');s.onload = function() { this.parentNode.removeChild(this);};(document.head||document.documentElement).appendChild(s);"
+                },
+                function(result) {
+                    if (chrome.runtime.lastError) {
+                        console.log(chrome.runtime.lastError);
+                        return;
+                    }
+                });
             }
         }
     });
@@ -53,50 +70,4 @@ function buildContextMenus(sites) {
         }*/
     });
 }
-
-
-
-/*
-chrome.contextMenus.onClicked.addListener(onClickHandler);
-
-var StR = "STEPS TO REPRODUCE:\\n\\nEXPECTED RESULT:\\n\\nACTUAL RESULT:\\n\\nADDITIONAL INFORMATION:";
-
-function buildInfo() {
-    loadInitialData();
-    var ver = window.navigator.appVersion.match(/Chrome\/([0-9.]+?) /)[1];
-    var browser = 'Browser: Chrome ' + ver + '\\n\\n';
-
-    return browser + StR;
-}
-
-function onClickHandler(info, tab) {
-    switch (info.menuItemId) {
-        case "pasteStR":
-            pasteStR();
-            break;
-        
-        default:
-            break;
-    }
-}
-
-function pasteStR() {
-    chrome.tabs.executeScript({
-        code: 'var domElement = document.activeElement; domElement.value = "' + buildInfo() + '";'
-    });
-}
-
-function createContextMenus() {
-    chrome.contextMenus.removeAll(function () {
-        chrome.contextMenus.create({ "title": "JIRA+", "contexts": ["all"], "id": "jiraplus" });
-        chrome.contextMenus.create({ "title": "Paste StR", "contexts": ["all"], "parentId": "jiraplus", "id": "pasteStR" });
-        
-        for (key in repositories) {
-            //chrome.contextMenus.create({ "title": "Paste " + repositories[key].name + " Info", "contexts": ["all"], "parentId": "jiraplus", "id": key });
-        }
-
-        chrome.contextMenus.create({ "title": "Refresh Repositories", "contexts": ["all"], "parentId": "jiraplus", "id": "refresh" });
-    });
-}*/
-
 

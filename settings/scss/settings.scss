@@ -4,35 +4,12 @@
 @import 'vars';
 @import 'actions';
 
-.jira {
-    float: left;
-    margin-right: 10px;
-    font-size: 25px;
-}
-
-.version {
-    font-size: 12px;
-    opacity: 0.3;
-    float: left;
-}
-
 .help {
     font-size: 11px;
     color: #E8E8E8;
     padding-bottom: 20px;
     font-style: italic;
     letter-spacing: 0.3px;
-}
-
-.about {
-    float: right;
-    font-size: 14px;
-    padding: 7px;
-    background: #133766;
-    border-radius: 2px;
-    padding-left: 15px;
-    padding-right: 15px;
-    cursor: pointer;
 }
 
 section.header {
@@ -43,6 +20,50 @@ section.header {
     font-weight: normal;
     height: 26px;
     border-bottom: 2px solid #03162f;
+
+    span.icon-hejira {
+        display: block;
+        float: left;
+        font-size: 29px;
+        margin-right: 7px;
+    }
+
+    .jira {
+        float: left;
+        margin-right: 10px;
+        font-size: 25px;
+    }
+
+    .version {
+        font-size: 12px;
+        opacity: 0.3;
+        float: left;
+    }
+
+    
+
+    .btn {
+        font-size: 14px;
+        padding: 7px;
+        background: #133766;
+        border-radius: 2px;
+        cursor: pointer;
+        margin-left: 5px;
+
+        .about {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        &:hover {
+            color: #133766;
+            background: white;
+        }
+    }
+
+    .buttons {
+        float: right;
+    }
 }
 
 section.block header {
@@ -184,4 +205,16 @@ section.block.content {
 .disclaimer {
     font-size: 12px;
     color: #C3C3C3;
+}
+
+.image-wrapper {
+    width: 100%;
+    height: 128px;
+    background: $primary-color-3;
+    text-align: center;
+
+    span.icon-hejira {
+        color: white;
+        font-size: 130px;
+    }
 }

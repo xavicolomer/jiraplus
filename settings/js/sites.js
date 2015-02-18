@@ -4,14 +4,14 @@ addSitesEventListeners();
 
 function addSitesEventListeners() {
     $(document).on('click', '.sites #add-btn', function() {
-        var html = tmpl('site_form_tmpl', getEmptySite());
+        var html = templ('site_form_templ', getEmptySite());
         openDialog(html);
     });
 
     $(document).on('click', '.sites #edit-btn', function() {
         var site, html;
         site = sites[getCurrentSite()];
-        html = tmpl('site_form_tmpl', site);
+        html = templ('site_form_templ', site);
         openDialog(html);
     });
 
@@ -153,8 +153,6 @@ function onSitesLoaded(data) {
         $('#remove-btn').show();
         $('#edit-btn').show();
     }
-
-    
     
     refreshSites();
 }

@@ -2,7 +2,7 @@ addVarsEventListeners();
 
 function addVarsEventListeners() {
     $(document).on('click', '.variables #add-btn', function() {
-        var html = tmpl('variable_form_tmpl', createEmptyVariable());
+        var html = templ('variable_form_templ', createEmptyVariable());
         openDialog(html);
     });
 
@@ -13,7 +13,7 @@ function addVarsEventListeners() {
         site = sites[getCurrentSite()];
         if (typeof site !== 'undefined' && typeof site['variables'] !== 'undefined' && typeof site['variables'][key] !== 'undefined') { 
             variable = site['variables'][key];
-            html = tmpl('variable_form_tmpl', variable);
+            html = templ('variable_form_templ', variable);
             openDialog(html);
         }
     });
@@ -81,14 +81,14 @@ function loadSiteVariables() {
     removeVariablesSection();
 
     site = sites[getCurrentSite()];
-    html = tmpl('variables_block_tmpl', {});
-    $('.sites.block').after(tmpl('variables_block_tmpl', variable));
+    html = templ('variables_block_templ', {});
+    $('.sites.block').after(templ('variables_block_templ', variable));
 
     for (key in systemVars) {
         variable = systemVars[key];
         variable.value = variable.callback();
         variable.type = 'system';
-        row = tmpl('variables_row_tmpl', variable);
+        row = templ('variables_row_templ', variable);
         $('.variables-list .header').after(row);
     }
     
@@ -96,7 +96,7 @@ function loadSiteVariables() {
         for (key in site['variables']) {
             variable = site['variables'][key];
             variable.type = 'user';
-            row = tmpl('variables_row_tmpl', variable);
+            row = templ('variables_row_templ', variable);
             $('.variables-list').append(row);
         }
     }
