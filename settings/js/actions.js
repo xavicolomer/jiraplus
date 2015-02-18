@@ -97,7 +97,7 @@ function triggerActionForSite(action, targetSite) {
         return;
     }
 
-    if (typeof site.actions[action.id] === 'undefined') {
+    if (typeof site.actions[action.key] === 'undefined') {
         throw 'You have not defined a trigger for this action';
         return;
     }

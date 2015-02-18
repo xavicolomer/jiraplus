@@ -65,7 +65,7 @@ function getVariableObjectFromForm() {
     var variable = {};
     variable.title = $('#variable-form input[name="name"]').val();
     variable.id = slugify(variable.title);
-    variable.key = $('#variable-form input[name="key"]').val();
+    variable.key = slugify($('#variable-form input[name="key"]').val());
     variable.value = $('#variable-form input[name="value"]').val();
     variable.oldKey = $('#variable-form input[name="oldkey"]').val();
     variable.created = new Date().getTime();

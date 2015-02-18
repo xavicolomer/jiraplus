@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "HeJIRA",
+    "name": "HeJIRA (Beta)",
     "description": "A set of tools to automatize JIRA workflow",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "icons": {  "16": "images/icon16.png",
                 "19": "images/icon19.png",
                 "38": "images/icon38.png",
