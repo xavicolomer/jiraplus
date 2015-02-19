@@ -19,9 +19,20 @@ var allowedTargets = {
     };
 
 var allowedIssueTypes = {
-        "defect": {},
         "sub-tasks": {},
         "functional requirement": {},
+        "configuration": {},
+        "general task": {},
+        "software component": {},
+        "design": {},
+        "deployment task": {},
+        "interface": {},
+        "defect": {},
+        "functional change": {},
+        "specification": {},
+        "testing": {},
+        "meeting": {},
+        "incident root analysis": {}
     };
 
 var systemVars = {
