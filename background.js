@@ -6,7 +6,6 @@ document.addEventListener("initJIRAPlus", function(data) {
 
 function loadInitialData() {
     if (typeof sites === 'undefined') {
-        
         chrome.storage.sync.get('sites', onScriptsSitesLoaded);
     }
 }
@@ -36,7 +35,9 @@ function onScriptsSitesLoaded(data) {
         event.initCustomEvent("onSitesLoaded", true, true, sites);
         window.dispatchEvent(event);
         document.dispatchEvent(event);
+        
     }
 }
+
 
 

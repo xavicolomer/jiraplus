@@ -51,6 +51,7 @@ function addVarsEventListeners() {
 
 function onVariableSavedToDisk() {
     loadSiteVariables();
+    buildContextMenus();
 }
 
 function createEmptyVariable() {
@@ -105,4 +106,6 @@ function loadSiteVariables() {
 function removeVariablesSection() {
     $('.variables.block').remove();
 }
+
+
 

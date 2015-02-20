@@ -1,13 +1,16 @@
-JIRA Constency
+heJIRA (Beta)
 ===================================================
 
 IMPORTANT NOTE:
 -----------------
-This plugin has no relation with Atlassian company. Is a tool developed by an independent developer
-to improve it's own workflow.
+hejira. Any flight or journey to a more desirable or congenial place.
+        
 
-This plugin is a prototype and might be a little buggy. If you notice some wrong behavior you only have to uninstall the extension and
-eveything will work as always :)
+Having multiple people working on the same project is great because you always reach greater goals. On the other hand different people means different criteria and that translates to non consistent documentation, tickets, etc. Because people do not tend to follow the guidelines...
+
+This extension allows you to add templates and validations to some forms before submit, to make sure there's only one criteria :)
+
+For now there are not much actions, but I probably will add more soon.
 
 
 What is this plugin?
